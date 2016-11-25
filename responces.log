@@ -1,0 +1,8 @@
+-----
+Method: 200 OK
+Headers: Content-Type: text/html; charset=utf-8
+Content-Length: 375
+
+
+Data: b'<?xml version="1.0"?>\n<a:multistatus xmlns:a="DAV:">\n   <a:response>\n      <a:href>/webdav//</a:href>\n      <a:propstat>\n         <a:status>HTTP/1.1 200 OK</a:status>\n         <a:prop>\n             <a:displayname>webdav</a:displayname>\n             <a:resourcetype><a:collection/></a:resourcetype>\n         </a:prop>\n      </a:propstat>\n   </a:response>\n    \n</a:multistatus>'
+-----

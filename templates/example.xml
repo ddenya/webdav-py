@@ -1,0 +1,18 @@
+    <!--values = [-->
+        <!--{'name': 'John', 'surname': 'Doe', 'age': 25},-->
+        <!--{'name': 'Jane', 'surname': 'Doe', 'age': 19}-->
+    <!--]-->
+
+    <!--template = render_template('sitemap.xml', values=values)-->
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">-->
+    <!--{% for val in values %}-->
+    <!--<person>-->
+        <!--<name>{{val.name}}</name>-->
+        <!--<surname>{{val.surname}}</surname>-->
+        <!--<age>{{val.age}}</age>-->
+    <!--</url>-->
+    <!--{% endfor %}-->
+<!--</urlset>-->

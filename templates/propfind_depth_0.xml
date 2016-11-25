@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<a:multistatus xmlns:a="DAV:">
+   <a:response>
+      <a:href>/webdav/</a:href>
+      <a:propstat>
+         <a:status>HTTP/1.1 200 OK</a:status>
+         <a:prop>
+             <a:displayname>webdav</a:displayname>
+             <a:resourcetype><a:collection/></a:resourcetype>
+         </a:prop>
+      </a:propstat>
+   </a:response>
+</a:multistatus>

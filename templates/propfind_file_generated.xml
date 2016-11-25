@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<a:multistatus xmlns:a="DAV:">
+   <a:response>
+      <a:href>{{ values.name }}/</a:href>
+      <a:propstat>
+         <a:status>HTTP/1.1 200 OK</a:status>
+         <a:prop>
+             <a:displayname>webdav</a:displayname>
+             <a:resourcetype><a:collection/></a:resourcetype>
+         </a:prop>
+      </a:propstat>
+   </a:response>
+    {% if values.depth != '0' %}
+        {% for file in values.includes %}
+            <a:response>
+            <a:href>{{ values.name + file.name }}</a:href>
+            <a:propstat>
+            <a:status>HTTP/1.1 200 OK</a:status>
+            <a:prop>
+                <a:displayname>{{file.name}}</a:displayname>
+                <a:getlastmodified>Mon, 09 Apr 2012 10:56:13 GMT</a:getlastmodified>
+            </a:prop>
+            </a:propstat>
+            </a:response>
+        {% endfor %}
+    {% endif %}
+</a:multistatus>

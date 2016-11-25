@@ -1,0 +1,14 @@
+-----
+Method: PROPFIND
+RURI: http://192.168.1.120/webdav/
+Headers: Host: 192.168.1.120
+Content-Length: 0
+User-Agent: Microsoft-WebDAV-MiniRedir/10.0.14393
+Content-Type: 
+Connection: Keep-Alive
+Translate: f
+Depth: 0
+
+
+Data: b''
+-----
