@@ -39,12 +39,8 @@ from files import make_files
 def parse_propfind(request):
 
     files = make_files()
-
     depth = request.headers['Depth']
-
     files['depth'] = depth
-
     template = render_template('propfind_file_generated.xml',values=files)
     response = make_response(template)
-
     return response

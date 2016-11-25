@@ -5,8 +5,12 @@
       <a:propstat>
          <a:status>HTTP/1.1 200 OK</a:status>
          <a:prop>
-             <a:displayname>webdav</a:displayname>
+             <a:displayname>{{ values.name }}</a:displayname>
              <a:resourcetype><a:collection/></a:resourcetype>
+             <a:iscollection>1</a:iscollection>
+             <a:getcontentlength>0</a:getcontentlength>
+             <a:getetag/>
+             <a:creationdate>2016-11-25T07:59:11.351Z</a:creationdate>
          </a:prop>
       </a:propstat>
    </a:response>
