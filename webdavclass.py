@@ -37,35 +37,47 @@ class WebDAV_server(MethodView):
         if depth == '0':
             only_folder_list_ = True
 
-        test = self.find_in_files(files,'test4')
 
-        print("SEARCH: " + str(test))
+        test = self.list_dir(files)
+        print("LIST" + str(test))
 
         return self.parse_propfind1(request)
 
-    def find_in_files(self,files,name):
+
+
+    def find_in_files(self,files,name,recursive=False):
 
         '''
-        Finds files and dirs in given structure (dictionary)
+        Finds files and dirs in given structure (dictionary) recursively if flag is set
         Example of structure is provided in files.py
         Accepts root element as initial one, but probably can accept any directory
+        Returns an array with every entities, matched by name
         '''
 
         found = []
-        print("find_in_files called for name == " + files['name'])
 
         for item in files['includes']:
 
-            if item['is_directory'] == True:
-                print("Here")
+            if item['is_directory'] == True and recursive:
                 print(str(item))
                 found.extend(self.find_in_files(item,name))
 
             if item['name'] == str(name):
-                print("FOUND!" + str(item))
                 found.append(item)
 
         return found
+
+    def list_dir(self,files):
+
+        '''
+        Lists a directory
+        Returns everything underlying
+        '''
+
+        res = {}
+        for item in files['includes']:
+            res.update(item)
+        return res
 
 
 
