@@ -3,136 +3,116 @@ import random
 class File(object):
 
     def __init__(self, name):
-        self.name   = name
-        self.id = random.randint(0,10000000)
+
+        '''
+        File properties
+        '''
+
+        self.name = name
+        self.id = str(random.randint(0,10000000))
         self.type = 'file'
         self.data = ''
+        self.size = '0'
 
     def set_data(self,data):
+
+        '''
+        Adds data and corrects file size
+        #TODO: Add correct size calculation (data is just str, size now is just len(str) )
+        '''
+
         self.data = str(data)
+        self.size = str(len(data))
 
     def get_data(self):
         return self.data
 
+    def list(self):
+        '''
+        Lists properties of file
+        '''
+
+        return {'name':self.name,
+                'id':self.id,
+                'data':self.data,
+                'size':self.size}
+
 class Directory(object):
 
     def __init__(self, name):
+
+        '''
+        Defining directory properties
+        '''
         self.name = name
         self.includes = []
         self.type = 'directory'
 
     def push(self,links_to_obj):
+
+        '''
+        Adds file to directory
+        '''
+
         self.includes.extend(links_to_obj)
 
     def pop(self,links_to_obj):
+
+        '''
+        Removes file from directory
+        '''
+
         del self.includes[includes.index(links_to_obj)]
 
     def list(self):
 
+        '''
+
+        Lists a directory. Returns a dictionary in format:
+
+        d = {
+        'id_of_file' = {
+                        'prop_name':prop_value
+                        }
+            }
+
+        '''
+
         list_result = {}
 
-        print(self.includes)
-
         for item in self.includes:
-
-            print("Type: " + str(type(item)) + "Obj: " + str(item) )
-
-            list_result[item.id] = {
-                'type':item.type,
-                'name':item.name,
-                'data':item.data
-            }
+            list_result[item.id] = item.list()
 
         return list_result
 
+    def find(self, name):
 
-a = File('test1')
-b = File('test2')
-c = File('test3')
+        '''
+        Finds entity by name in directory.
+        Returns output of its list method.
+        '''
 
-
-d = Directory('webdav')
-d.push([a,b,c])
-
-print(d.list())
-
-a.set_data("hello")
-
-print(d.list())
-
-
-
-
-
+        for item in self.includes:
+            if item.name == str(name):
+                return item.list()
 
 def make_files():
 
-    file1 = {
-    'name':'test1',
-    'is_directory': False,
-    'data': 'hello'
-    }
+    '''
 
-    file2 = {
-    'name':'test2',
-    'is_directory': False,
-    'data': 'hello2'
-    }
+    Makes directory webdav and 3 files in it
 
-    file3 = {
-    'name':'test3',
-    'is_directory': False,
-    'data': 'hello'
-    }
+    '''
 
-    file4 = {
-    'name':'test4',
-    'is_directory': False,
-    'data': 'hello2'
-    }
+    a = File('test1')
+    a.set_data("hello")
 
-    file5 = {
-    'name':'test4',
-    'is_directory': False,
-    'data': 'hello5'
-    }
+    b = File('test2')
+    b.set_data("sometext")
 
-    file6 = {
-    'name':'test4',
-    'is_directory': False,
-    'data': 'hello6'
-    }
+    c = File('test3')
 
-    file7 = {
-    'name':'test7',
-    'is_directory': False,
-    'data': 'hello7'
-    }
+    d = Directory('webdav')
+    d.push([a, b, c])
 
-
-    dir1 = {
-        'name':'dirtest1',
-        'is_directory': True,
-        'includes': [file3,file4]
-    }
-
-    dir2 = {
-        'name':'dirtest2',
-        'is_directory': True,
-        'includes': [file6,file7]
-    }
-
-    webdav = {
-        'name':'webdav',
-        'is_directory': True,
-        'includes': [file1,file2,file5,dir1,dir2]
-    }
-
-    root = {
-    'name': 'root',
-    'is_directory': True,
-    'includes': [webdav]
-    }
-
-    return root
-
+    return d.list()

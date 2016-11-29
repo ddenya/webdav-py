@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <a:multistatus xmlns:a="DAV:">
    <a:response>
-      <a:href> /{{ values.name }}/ </a:href>
-       <a:hello>{{ hello() }}</a:hello>
+      <a:href>/webdav/</a:href>
       <a:propstat>
          <a:status>HTTP/1.1 200 OK</a:status>
          <a:prop>
-             <a:displayname>{{ values.name }}</a:displayname>
+             <a:displayname>/webdav/</a:displayname>
              <a:resourcetype><a:collection/></a:resourcetype>
              <a:iscollection>1</a:iscollection>
              <a:getcontentlength>0</a:getcontentlength>
@@ -27,16 +26,17 @@
          </a:prop>
       </a:propstat>
    </a:response>
-    {% if values.depth != 0 %}
-        {% for file in values.includes %}
+    <a:depth>{{values.depth}}</a:depth>
+    {% if values.depth != '0' %}
+        {% for id in values.files %}
             <a:response>
-                <a:depth>{{values.depth}}</a:depth>
-            <a:href>/{{values.name}}/{{file.name}}/</a:href>
+            <a:href> {{ pathjoin('webdav', values['files'][id]['name']) }} </a:href>
             <a:propstat>
             <a:status>HTTP/1.1 200 OK</a:status>
             <a:prop>
-                <a:displayname>{{file.name}}</a:displayname>
+                <a:displayname>{{ id.name }}</a:displayname>
                 <a:getlastmodified>Mon, 09 Apr 2012 10:56:13 GMT</a:getlastmodified>
+                <a:getcontentlength>{{ values['files'][id]['size'] }} </a:getcontentlength>
             </a:prop>
             </a:propstat>
             </a:response>

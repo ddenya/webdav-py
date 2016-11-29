@@ -19,19 +19,19 @@ ALLOWED_METHODS = ['GET', 'PUT', 'PROPFIND', 'PROPPATCH', 'MKCOL', 'DELETE',
 
 app = Flask(__name__)
 
-app.add_url_rule('/webdav/', view_func=WebDAV_server.as_view('webdav'),methods=ALLOWED_METHODS)
+app.add_url_rule('/webdav', view_func=WebDAV_server.as_view('webdav'),methods=ALLOWED_METHODS)
 
 @app.before_request
 def modify_request():
 
-    # It seems that Windows client is missing a trailing slash in RURI
-    if request.method == 'PROPFIND':
-        # print("Initial RURI: " + str(request.url))
-        if request.url[-1] != '/':
-        #     pass
-        #     request.url = request.url + '/'
-        # print("Modified RURI: " + str(request.url))
-            return redirect(url_for('webdav'))
+    # # It seems that Windows client is missing a trailing slash in RURI
+    # if request.method == 'PROPFIND':
+    #     # print("Initial RURI: " + str(request.url))
+    #     if request.url[-1] != '/':
+    #     #     pass
+    #     #     request.url = request.url + '/'
+    #     # print("Modified RURI: " + str(request.url))
+    #         return redirect(url_for('webdav'))
 
     if debug:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), request_log),mode='a') as file:
@@ -117,10 +117,10 @@ def jinja_handler():
     I just wonder how it works
     '''
 
-    def hello():
-        return "Hello jinja"
+    def pathjoin(*args):
+        return os.path.join(*args)
 
-    return dict(hello=hello)
+    return dict(pathjoin=pathjoin)
 
 
 
