@@ -104,15 +104,17 @@ def make_files():
 
     '''
 
-    a = File('test1')
+    a = File('test1.txt')
     a.set_data("hello")
 
-    b = File('test2')
+    b = File('test2.txt')
     b.set_data("sometext")
 
-    c = File('test3')
+    c = File('test3.jpg')
 
     d = Directory('webdav')
+
+    # In the form of ARRAY!
     d.push([a, b, c])
 
     return d.list()

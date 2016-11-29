@@ -20,6 +20,8 @@ ALLOWED_METHODS = ['GET', 'PUT', 'PROPFIND', 'PROPPATCH', 'MKCOL', 'DELETE',
 app = Flask(__name__)
 
 app.add_url_rule('/webdav', view_func=WebDAV_server.as_view('webdav'),methods=ALLOWED_METHODS)
+app.add_url_rule('/webdav/<file>', view_func=WebDAV_server,methods=ALLOWED_METHODS)
+
 
 @app.before_request
 def modify_request():

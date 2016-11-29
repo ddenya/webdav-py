@@ -20,6 +20,8 @@ class WebDAV_server(MethodView):
             'depth':request.headers['Depth']
         }
 
+        print("RURI: " + str(request.url))
+
         return make_response(render_template('propfind_file_generated.xml', values=files))
 
 
