@@ -14,34 +14,58 @@ class WebDAV_server(MethodView):
         return response
 
     def parse_propfind1(self,request):
+
+        # Making files, but cutting the root
         files = make_files()
+        files = files['includes'][0]
+
         depth = request.headers['Depth']
+
         files['depth'] = depth
-        template = render_template('propfind_file_generated.xml', values=files)
+
+        print("Depth: " + str(files['depth']) )
+
+        print("\n" + str(files['includes'][0]) + "\n")
+
+        template = render_template('propfind_file_generated.xml', values=files['includes'][0])
         response = make_response(template)
         return response
 
     def parse_propfind(self,request):
 
-        # Taking Depth out: if depth is 0 - only container should be descripted
-        # If depth is 1 - everything in container should be descripted
+        # Taking Depth out: if depth is 0 - only container should be described
+        # If depth is 1 - everything in container should be described
         # Depth = infinity is not implemented now
 
         depth = request.headers['Depth']
         files = make_files()
 
         url = request.url
-        print("URI: " + str(url))
+        urlsplit = url.strip().split("/")
+        print(urlsplit)
+
+        url_result = []
+
+        for elem in urlsplit:
+            if elem:
+                url_result.append(elem)
 
         # List only folder : depth == 0:
+
+        res = self.find_in_files(files,url_result[-1],recursive=True)
+
         if depth == '0':
-            only_folder_list_ = True
+            files['list_mode'] = 'folder'
+        if depth == '1':
+            files['list_mode'] = 'file'
+        if depth !=0 and depth !=1:
+            files['list_mode'] = 'unknown'
 
 
         test = self.list_dir(files)
-        print("LIST" + str(test))
 
         return self.parse_propfind1(request)
+
 
 
 
@@ -51,7 +75,7 @@ class WebDAV_server(MethodView):
         Finds files and dirs in given structure (dictionary) recursively if flag is set
         Example of structure is provided in files.py
         Accepts root element as initial one, but probably can accept any directory
-        Returns an array with every entities, matched by name
+        Returns an array with every entity, matched by name
         '''
 
         found = []
@@ -71,7 +95,7 @@ class WebDAV_server(MethodView):
 
         '''
         Lists a directory
-        Returns everything underlying
+        Returns everything underlying (a dictionary with everything in 'includes' section)
         '''
 
         res = {}

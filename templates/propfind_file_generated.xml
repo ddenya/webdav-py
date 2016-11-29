@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <a:multistatus xmlns:a="DAV:">
    <a:response>
-      <a:href>{{ values.name }}/</a:href>
+      <a:href> /{{ values.name }}/ </a:href>
+       <a:hello>{{ hello() }}</a:hello>
       <a:propstat>
          <a:status>HTTP/1.1 200 OK</a:status>
          <a:prop>
@@ -11,13 +12,26 @@
              <a:getcontentlength>0</a:getcontentlength>
              <a:getetag/>
              <a:creationdate>2016-11-25T07:59:11.351Z</a:creationdate>
+             <a:supportedlock>
+                 <a:lockentry>
+                     <a:lockscope><a:exclusive/></a:lockscope>
+                     <a:locktype><a:write/></a:locktype>
+                 </a:lockentry>
+                 <a:lockentry>
+                     <a:lockscope><a:shared/></a:lockscope>
+                     <a:locktype><a:write/></a:locktype>
+                 </a:lockentry>
+             </a:supportedlock>
+             <a:lockdiscovery/>
+             <a:ishidden>0</a:ishidden>
          </a:prop>
       </a:propstat>
    </a:response>
-    {% if values.depth != '0' %}
+    {% if values.depth != 0 %}
         {% for file in values.includes %}
             <a:response>
-            <a:href>{{ values.name + file.name }}</a:href>
+                <a:depth>{{values.depth}}</a:depth>
+            <a:href>/{{values.name}}/{{file.name}}/</a:href>
             <a:propstat>
             <a:status>HTTP/1.1 200 OK</a:status>
             <a:prop>

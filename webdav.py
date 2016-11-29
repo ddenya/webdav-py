@@ -2,6 +2,7 @@ from flask import Flask, request, g, make_response, redirect, url_for,render_tem
 from lxml import etree
 import os
 from webdavclass import WebDAV_server
+from datetime import datetime
 
 # http:\\192.168.1.120\webdav\
 # Enables request logging to console
@@ -34,22 +35,26 @@ def modify_request():
 
     if debug:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), request_log),mode='a') as file:
-            file.write("-----\n")
-            file.write("Method: " + str(request.method) + "\n")
-            file.write("RURI: " + str(request.url) + "\n")
-            file.write("Headers: " + str(request.headers) + "\n")
-            file.write("Data: " + str(request.data) + "\n")
-            file.write("-----\n")
+            file.write("-----\n \r")
+            file.write("Time " + datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S") + "\n" )
+            file.write("Method: " + str(request.method) + "\n \r")
+            file.write("RURI: " + str(request.url) + "\n \r")
+            file.write("Headers: " + str(request.headers) + "\n \r")
+            bytesdecoded = request.data.decode()
+            file.write("Data: " + str(bytesdecoded.split('\n')) )
+            file.write("-----\n \r")
 
 @app.after_request
 def logging(response):
     if debug:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), response_log),mode='a') as file:
             file.write("-----\n")
-            file.write("Method: " + str(response.status) + "\n")
-            file.write("Headers: " + str(response.headers) + "\n" )
-            file.write("Data: " + str(response.get_data()) + "\n" )
-            file.write("-----\n")
+            file.write("Time " + datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S") + "\n" )
+            file.write("Status: " + str(response.status) + "\n \r")
+            file.write("Headers: " + str(response.headers) + "\n \r" )
+            bytesdecoded = response.data.decode()
+            file.write("Data: " + bytesdecoded )
+            file.write("----- \n")
     return response
 
 
@@ -68,7 +73,7 @@ def logging(response):
 #     if request.method == 'PROPFIND':
 #         print("I HAVE PROPFIND HERE")
 #         depth = request.headers['Depth']
-#         print("GOT DEPTH: " + str(depth) + " end \n")
+#         print("GOT DEPTH: " + str(depth) + " end \n \r")
 #
 #         response = parse_propfind(request)
 #
@@ -103,6 +108,19 @@ def capture_options():
         return resp
 
     return resp
+
+
+@app.context_processor
+def jinja_handler():
+    '''
+    Allows to pass results of execution of python functions to jinja2 templates
+    I just wonder how it works
+    '''
+
+    def hello():
+        return "Hello jinja"
+
+    return dict(hello=hello)
 
 
 
