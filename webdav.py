@@ -12,6 +12,7 @@ debug = True
 
 request_log = 'requests.log'
 response_log = 'responces.log'
+host = '192.168.88.56'
 
 # List of allowed methods
 ALLOWED_METHODS = ['GET', 'PUT', 'PROPFIND', 'PROPPATCH', 'MKCOL', 'DELETE',
@@ -124,7 +125,7 @@ def jinja_handler():
     '''
 
     def pathjoin(*args):
-        return os.path.join(*args)
+        return os.path.join('http://',host,*args)
 
     return dict(pathjoin=pathjoin)
 
