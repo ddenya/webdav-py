@@ -4,8 +4,30 @@ from files import make_files
 
 class WebDAV_server(MethodView):
 
-    def propfind(self):
-        return self.parse_propfind(request)
+    def propfind(self,file=None):
+
+        print("I have got FILE: " + str(file))
+        print("RURI: " + str(request.url))
+
+        files = {
+            'files': make_files(),
+            'depth': request.headers['Depth']
+        }
+
+        if file:
+            files['only_files'] = True
+
+
+        print("Files structure: " + str(files))
+        print("Search result: " + str(files['files']['link'].find(str(file))) )
+
+        if not file:
+            print('LIST ONLY DIR')
+            return make_response(render_template('propfind_file_generated.xml', values=files))
+        elif file and files['files']['link'].find(str(file)):
+            print('LIST ONLY FILE')
+            return make_response(render_template('propfind_one_file.xml',values=(files['files']['link'].find(str(file)))))
+
 
     def options(self):
         response = make_response("GOT OPTIONS11 HERE")
@@ -13,18 +35,13 @@ class WebDAV_server(MethodView):
         response.headers['DAV'] = '1, 2, ordered-collections'
         return response
 
-    def parse_propfind(self,request):
 
-        files = {
-            'files':make_files(),
-            'depth':request.headers['Depth']
-        }
+    def get(self):
 
+        print("I HAVE GET!!")
         print("RURI: " + str(request.url))
 
-        return make_response(render_template('propfind_file_generated.xml', values=files))
-
-
+        return None
 
 
 

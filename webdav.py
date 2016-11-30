@@ -19,8 +19,12 @@ ALLOWED_METHODS = ['GET', 'PUT', 'PROPFIND', 'PROPPATCH', 'MKCOL', 'DELETE',
 
 app = Flask(__name__)
 
-app.add_url_rule('/webdav', view_func=WebDAV_server.as_view('webdav'),methods=ALLOWED_METHODS)
-app.add_url_rule('/webdav/<file>', view_func=WebDAV_server,methods=ALLOWED_METHODS)
+webdav_view = WebDAV_server.as_view('webdav')
+
+# Registers a view for /webdav/ directory
+app.add_url_rule('/webdav', defaults ={'file': None}, view_func=webdav_view,methods=ALLOWED_METHODS)
+# Registers a view for file inside webdav directory
+app.add_url_rule('/webdav/<file>', view_func=webdav_view, methods=ALLOWED_METHODS)
 
 
 @app.before_request
@@ -123,8 +127,6 @@ def jinja_handler():
         return os.path.join(*args)
 
     return dict(pathjoin=pathjoin)
-
-
 
 
 if __name__ == "__main__":

@@ -32,10 +32,13 @@ class File(object):
         Lists properties of file
         '''
 
-        return {'name':self.name,
+        return {'link':self,
+                'name':self.name,
                 'id':self.id,
                 'data':self.data,
-                'size':self.size}
+                'size':self.size,
+                'type':self.type
+                }
 
 class Directory(object):
 
@@ -79,6 +82,7 @@ class Directory(object):
         '''
 
         list_result = {}
+        list_result['link'] = self
 
         for item in self.includes:
             list_result[item.id] = item.list()
@@ -99,12 +103,10 @@ class Directory(object):
 def make_files():
 
     '''
-
     Makes directory webdav and 3 files in it
-
     '''
 
-    a = File('test1.txt')
+    a = File('test1.png')
     a.set_data("hello")
 
     b = File('test2.txt')
@@ -116,5 +118,7 @@ def make_files():
 
     # In the form of ARRAY!
     d.push([a, b, c])
+
+    #print("List" + str(d.list() ))
 
     return d.list()

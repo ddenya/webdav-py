@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <a:multistatus xmlns:a="DAV:">
+    {% if not values['only_files'] %}
    <a:response>
       <a:href>/webdav/</a:href>
       <a:propstat>
@@ -26,9 +27,11 @@
          </a:prop>
       </a:propstat>
    </a:response>
+    {% endif %}
     <a:depth>{{values.depth}}</a:depth>
     {% if values.depth != '0' %}
         {% for id in values.files %}
+        {% if values['files'][id]['type'] == 'file' %}
             <a:response>
             <a:href> {{ pathjoin('webdav', values['files'][id]['name']) }} </a:href>
             <a:propstat>
@@ -40,6 +43,7 @@
             </a:prop>
             </a:propstat>
             </a:response>
+        {% endif %}
         {% endfor %}
     {% endif %}
 </a:multistatus>
