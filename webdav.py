@@ -8,9 +8,11 @@ debug = True
 
 # Logger
 logger = Logger()
+logger.flush()
 
 # Crunch, needed for path_join in jinja_handler. Temporary.
-host = '192.168.88.56'
+#host = '192.168.88.56'
+host = '192.168.1.120'
 
 # List of allowed methods
 ALLOWED_METHODS = ['GET', 'PUT', 'PROPFIND', 'PROPPATCH', 'MKCOL', 'DELETE',
@@ -27,13 +29,11 @@ app.add_url_rule('/webdav/<file>', view_func=webdav_view, methods=ALLOWED_METHOD
 @app.before_request
 def logging():
     if debug:
-        logger.flush()
         logger.add('request',request)
 
 @app.after_request
 def logging(response):
     if debug:
-        logger.flush()
         logger.add('response',response)
     return response
 
