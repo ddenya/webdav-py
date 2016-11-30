@@ -28,7 +28,7 @@ class WebDAV_server(MethodView):
             print('LIST ONLY FILE')
             return make_response(render_template('propfind_one_file.xml',values=(files['files']['link'].find(str(file)))))
 
-        return 404
+        return make_response('',404)
 
 
     def options(self):
@@ -44,7 +44,7 @@ class WebDAV_server(MethodView):
         print("I have got FILE in GET: " + str(file))
         print("RURI: " + str(request.url))
 
-        return 200
+        return make_response('',200)
 
 
 
