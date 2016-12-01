@@ -20,7 +20,8 @@ class Logger(object):
                 log_file.write("Response to : " + self.last_req_link.method + "\n")
                 log_file.write(str(self.link_to_req.status) + "\n")
                 log_file.write(str(self.link_to_req.headers) + "\n")
-                log_file.write("Data: " + self.link_to_req.data.decode() + "\n")
+                self.link_to_req.direct_passthrough = False
+                log_file.write("Data: " + self.link_to_req.get_data(as_text=True) + "\n")
 
             if type == 'request':
                 log_file.write("Request: \n")

@@ -9,7 +9,7 @@
                 <a:getlastmodified>Mon, 09 Apr 2012 10:56:13 GMT</a:getlastmodified>
                 <a:getcontentlength>{{ values['size'] }}</a:getcontentlength>
                 <a:getetag>{{ values.id }}</a:getetag>
-                <a:getcontenttype>image/png</a:getcontenttype>
+                <a:getcontenttype>{{ values.mimetype }}</a:getcontenttype>
                 <a:iscollection>0</a:iscollection>
                 <a:resourcetype/>
                 <a:getcontentlanguage/>

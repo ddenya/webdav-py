@@ -37,9 +37,15 @@
             <a:propstat>
             <a:status>HTTP/1.1 200 OK</a:status>
             <a:prop>
-                <a:displayname>{{ id.name }}</a:displayname>
+                <a:displayname>{{ values['files'][id]['name'] }}</a:displayname>
                 <a:getlastmodified>Mon, 09 Apr 2012 10:56:13 GMT</a:getlastmodified>
-                <a:getcontentlength>{{ values['files'][id]['size'] }} </a:getcontentlength>
+                <a:getcontentlength>{{ values['files'][id]['size'] }}</a:getcontentlength>
+                <a:getetag>{{ values['files'][id]['id'] }}</a:getetag>
+                <a:getcontenttype>{{ values['files'][id]['mimetype'] }}</a:getcontenttype>
+                <a:iscollection>0</a:iscollection>
+                <a:resourcetype/>
+                <a:getcontentlanguage/>
+                <a:creationdate>2016-11-25T07:59:11.387Z</a:creationdate>
             </a:prop>
             </a:propstat>
             </a:response>

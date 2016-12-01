@@ -1,32 +1,34 @@
-from flask import request, render_template, make_response
+from flask import request, render_template, make_response,send_file
 from flask.views import MethodView
 from files import make_files
+import io
 
 class WebDAV_server(MethodView):
+
+    def __init__(self):
+
+        self.files = {}
+        self.files['files'] = make_files()
 
     def propfind(self,file=None):
 
         print("I have got FILE: " + str(file))
         print("RURI: " + str(request.url))
 
-        files = {
-            'files': make_files(),
-            'depth': request.headers['Depth']
-        }
+        self.files['depth']=request.headers['Depth']
 
         if file:
-            files['only_files'] = True
+            self.files['only_files'] = True
 
-
-        print("Files structure: " + str(files))
-        print("Search result: " + str(files['files']['link'].find(str(file))) )
+        print("Files structure: " + str(self.files))
+        print("Search result: " + str(self.files['files']['link'].find(str(file))) )
 
         if not file:
             print('LIST ONLY DIR')
-            return make_response(render_template('propfind_file_generated.xml', values=files))
-        elif file and files['files']['link'].find(str(file)):
+            return make_response(render_template('propfind_file_generated.xml', values=self.files),207)
+        elif file and self.files['files']['link'].find(str(file)):
             print('LIST ONLY FILE')
-            return make_response(render_template('propfind_one_file.xml',values=(files['files']['link'].find(str(file)))))
+            return make_response(render_template('propfind_one_file.xml',values=(self.files['files']['link'].find(str(file)))),207)
 
         return make_response('',404)
 
@@ -44,7 +46,24 @@ class WebDAV_server(MethodView):
         print("I have got FILE in GET: " + str(file))
         print("RURI: " + str(request.url))
 
-        return make_response('',200)
+        if not file or not self.files['files']['link'].find(str(file)):
+
+            print('No file')
+            return make_response('', 404)
+
+        elif file and self.files['files']['link'].find(str(file)):
+
+            print('Get file')
+
+            file_to_send = self.files['files']['link'].find(str(file))
+
+            data_bytes = io.BytesIO()
+            data_bytes.write(bytes(file_to_send['data'],'utf-8'))
+            data_bytes.seek(0)
+
+            return send_file(data_bytes,mimetype=file_to_send['mimetype'])
+
+        #return make_response(response=self.files['files']['link'].find(str(file)['data'],200))
 
 
 

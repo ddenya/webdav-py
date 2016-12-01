@@ -1,4 +1,5 @@
-import random
+from random import randint
+import mimetypes
 
 class File(object):
 
@@ -9,10 +10,13 @@ class File(object):
         '''
 
         self.name = name
-        self.id = str(random.randint(0,10000000))
+        self.id = str(randint(0,10000000))
         self.type = 'file'
         self.data = ''
         self.size = '0'
+        self.mimetype = mimetypes.guess_type(self.name)
+
+
 
     def set_data(self,data):
 
@@ -37,7 +41,8 @@ class File(object):
                 'id':self.id,
                 'data':self.data,
                 'size':self.size,
-                'type':self.type
+                'type':self.type,
+                'mimetype':self.mimetype[0]
                 }
 
 class Directory(object):
