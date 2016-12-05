@@ -29,7 +29,7 @@ class WebDavProtocol(MethodView):
 
 
     def options(self):
-        response = make_response("GOT OPTIONS11 HERE")
+        response = make_response('')
         response.headers[
             'Allow'] = 'OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, COPY, MOVE, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, ORDERPATCH'
         response.headers['DAV'] = '1, 2, ordered-collections'
@@ -37,8 +37,6 @@ class WebDavProtocol(MethodView):
 
 
     def get(self, pathname=None):
-
-        logger.add_custom(self.files)
 
         if not pathname or not self.find_file(pathname):
             return make_response('', 404)
@@ -54,5 +52,5 @@ class WebDavProtocol(MethodView):
             if file_to_send['mimetype'] == 'text/plain':
                 return send_file(data_bytes, mimetype=file_to_send['mimetype'])
             else:
-                return send_file(data_bytes, attachment_filename=file_to_send['name'], mimetype=file_to_send['mimetype'],
-                                 as_attachment=True)
+                return send_file(data_bytes,mimetype=file_to_send['mimetype'])
+                #return send_file(data_bytes, attachment_filename=file_to_send['name'], mimetype=file_to_send['mimetype'],as_attachment=True)
