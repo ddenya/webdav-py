@@ -1,5 +1,6 @@
 from random import randint
 import mimetypes
+import os
 
 class File(object):
 
@@ -15,8 +16,6 @@ class File(object):
         self.data = ''
         self.size = '0'
         self.mimetype = mimetypes.guess_type(self.name)
-
-
 
     def set_data(self,data):
 
@@ -119,10 +118,17 @@ def make_files():
 
     c = File('test3.jpg')
 
+    path = os.path.join(os.path.join(os.path.dirname(__file__),'static'),'test_image' )
+
+    with open(path, mode='r') as image_file:
+        c.set_data(image_file.read())
+        image_file.close()
+
     d = Directory('webdav')
 
     # In the form of ARRAY!
     d.push([a, b, c])
+
 
     #print("List" + str(d.list() ))
 

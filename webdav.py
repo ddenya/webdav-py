@@ -1,6 +1,9 @@
-from flask import Flask, request, g, make_response, redirect, url_for,render_template
+from webdavprotocol import WebDavProtocol
+from testwebdavprotocol import TestWebDavProtocol
+
+from flask import Flask, request
+
 import os
-from webdavclass import WebDAV_server
 from logger_class import Logger
 
 # Enables request logging to log file
@@ -11,20 +14,18 @@ logger = Logger()
 logger.flush()
 
 # Crunch, needed for path_join in jinja_handler. Temporary.
-#host = '192.168.88.56'
-host = '192.168.1.120'
+host = '192.168.88.56'
+#host = '192.168.1.120'
 
 # List of allowed methods
 ALLOWED_METHODS = ['GET', 'PUT', 'PROPFIND', 'PROPPATCH', 'MKCOL', 'DELETE',
                    'COPY', 'MOVE', 'OPTIONS']
 
 app = Flask(__name__)
-webdav_view = WebDAV_server.as_view('webdav')
 
-# Registers a view for /webdav/ directory
-app.add_url_rule('/webdav', defaults ={'file': None}, view_func=webdav_view,methods=ALLOWED_METHODS)
-# Registers a view for file inside webdav directory
-app.add_url_rule('/webdav/<file>', view_func=webdav_view, methods=ALLOWED_METHODS)
+webdav_view = TestWebDavProtocol.as_view('webdav')
+app.add_url_rule('/webdav', defaults={'path': ''}, view_func=webdav_view, methods=ALLOWED_METHODS)
+app.add_url_rule('/webdav/<path:pathname>', view_func=webdav_view, methods=ALLOWED_METHODS)
 
 @app.before_request
 def logging():
@@ -36,6 +37,7 @@ def logging(response):
     if debug:
         logger.add('response',response)
     return response
+
 
 @app.route('/',methods=ALLOWED_METHODS)
 def capture_options():
@@ -73,4 +75,3 @@ def jinja_handler():
 
 if __name__ == "__main__":
     app.run('0.0.0.0',80, True)
-
