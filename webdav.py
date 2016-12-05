@@ -1,7 +1,7 @@
 from webdavprotocol import WebDavProtocol
 from testwebdavprotocol import TestWebDavProtocol
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 
 import os
 from logger_class import Logger
